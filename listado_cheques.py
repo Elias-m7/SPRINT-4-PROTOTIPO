@@ -7,8 +7,10 @@ def salidaPorPantalla(tipoDeSalida):
     csv_file = csv.reader(open(archivo, 'r'))
     if csv_salida == "PANTALLA":
         for row in csv_file:
-            if dni==row[8]:
-                print(row)
+            if dni==row[8] and tipoCheque==row[9]:
+                print(row[:10])
+            elif dni==row[8] and tipoCheque!=row[9]:
+                print("Error! El tipo de cheque es incorrecto.")
 
 def salidaPorCsv(tipoDeSalida,dniCliente):
     fechaActual = datetime.datetime.now()
@@ -21,12 +23,15 @@ def salidaPorCsv(tipoDeSalida,dniCliente):
     header = next(csv_file)
     if csv_salida == "CSV":
         for row in csv_file:
-            if dni==row[8]:
+            if dni==row[8] and tipoCheque==row[9]:
                 new_file.append(row)
+                new_file.append(row[3:8])
                 with open(nombreDeArchivocsv+".csv", 'w', newline='') as cf:
                     writer = csv.writer(cf, delimiter=',')
-                    writer.writerow(header)
-                    writer.writerows(new_file)
+                    writer.writerow(header[3:8])
+                    writer.writerows(new_file[3:8])
+            elif dni==row[8] and tipoCheque!=row[9]:
+                print("Error! El tipo de cheque es incorrecto.")
                   
 
 if __name__ == '__main__':
